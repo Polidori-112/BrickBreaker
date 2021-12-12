@@ -89,13 +89,22 @@ architecture synth of top is
       );
   end component;
 
+  component startScreen is
+      port (
+          clk : in std_logic;
+          sscreen_row : in unsigned(9 downto 0); -- current sscreen_row of pixels
+          sscreen_col : in unsigned(9 downto 0); -- current sscreen_col of pixels
+          sdisplay : out std_logic_vector(5 downto 0)
+      );
+  end component;
+
   signal paddle_display : std_logic;
   signal ball_display : std_logic;
   signal brick_display : std_logic;
   signal lives_display : std_logic;
   signal del : std_logic := '0';
-
-  signal lives : unsigned (1 downto 0);
+  signal startdisplay : std_logic_vector(5 downto 0);
+  signal lives : unsigned (1 downto 0) := "00";
   signal changeX : std_logic := '0';
   signal changeY : std_logic := '0';
   signal vel : unsigned(2 downto 0);
@@ -108,7 +117,7 @@ architecture synth of top is
   signal frame_update : std_logic := '0';
 
   signal brick_switch : std_logic := '0';
-
+  signal level : unsigned (2 downto 0) := "001";
 begin
 
   vga1 : vga port map (
@@ -159,21 +168,32 @@ begin
     display => lives_display
   );
 
+  startvga : startScreen port map (
+    clk => clk_pxl,
+    sscreen_col => col,
+    sscreen_row => row,
+    sdisplay => startdisplay
+  );
+
   process (clk_pxl) begin
     if rising_edge(clk_pxl) then
-
+    
       --draw paddle and ball
       if (valid1 = '1') then
-         if (paddle_display = '1') then
-           rgb <= "110000";
-         elsif (ball_display = '1') then
-           rgb <= "111111";
-         elsif (brick_display = '1') then
-           rgb <= "000011";
-         elsif (lives_display = '1') then
-           rgb <= "111111";
+         if (lives = "00") then
+            rgb <= startdisplay;
          else
-           rgb <= "000000";
+            if ((paddle_display = '1')) then
+                rgb <= "110000";
+            elsif ((ball_display = '1')) then
+                rgb <= "111111";
+            elsif ((brick_display = '1')) then
+                rgb <= "000011";
+            elsif ((lives_display = '1')) then
+                rgb <= "111111";
+            else
+                rgb <= "000000";
+            end if;
          end if;
       else
         rgb <= "000000";
