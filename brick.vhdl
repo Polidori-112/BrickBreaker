@@ -17,24 +17,23 @@ entity brick is
 end brick;
 
 architecture synth of brick is
-  signal brick0 : std_logic_vector(9 downto 0) :=  
-                                            "1010101010"; 
-  signal brick1 : std_logic_vector(9 downto 0) :=  
-                                            "0101010101"; 
-  signal brick2 : std_logic_vector(9 downto 0) :=  
+  signal brick0 : std_logic_vector(9 downto 0) :=
                                             "1010101010";
-  signal brick3 : std_logic_vector(9 downto 0) :=  
+  signal brick1 : std_logic_vector(9 downto 0) :=
                                             "0101010101";
-  signal brick4 : std_logic_vector(9 downto 0) :=  
+  signal brick2 : std_logic_vector(9 downto 0) :=
                                             "1010101010";
-  signal brick5 : std_logic_vector(9 downto 0) :=  
+  signal brick3 : std_logic_vector(9 downto 0) :=
+                                            "0101010101";
+  signal brick4 : std_logic_vector(9 downto 0) :=
+                                            "1010101010";
+  signal brick5 : std_logic_vector(9 downto 0) :=
                                             "0101010101";
 
 
 
 begin
 
---Only displays last brick due to how for loops work in vhdl
 process (clk) begin
 
 	if rising_edge(clk) then

@@ -18,6 +18,10 @@ entity top is
       nes_latch : out std_logic;
       nes_clock : out std_logic;
 
+      left : in std_logic;
+      right : in std_logic;
+      start : in std_logic;
+
       rgb : out std_logic_vector(5 downto 0)
       );
 end top;
@@ -99,12 +103,12 @@ architecture synth of top is
           display : out std_logic
       );
   end component;
- 
+
   component startScreen is
       port (
           clk : in std_logic;
-          sscreen_row : in unsigned(9 downto 0); -- current sscreen_row of pixels
-          sscreen_col : in unsigned(9 downto 0); -- current sscreen_col of pixels
+          sscreen_row : in unsigned(9 downto 0); -- current screen_row of pixels
+          sscreen_col : in unsigned(9 downto 0); -- current screen_col of pixels
           sdisplay : out std_logic_vector(5 downto 0)
       );
   end component;
@@ -116,9 +120,6 @@ architecture synth of top is
   signal del : std_logic := '0';
   signal startdisplay : std_logic_vector(5 downto 0);
 
-  signal left : std_logic;
-  signal right : std_logic;
-  signal start : std_logic;
   signal lives : unsigned (1 downto 0) := "11";
   signal changeX : std_logic := '0';
   signal changeY : std_logic := '0';
@@ -126,6 +127,10 @@ architecture synth of top is
 
   signal row : unsigned(9 downto 0);
   signal col : unsigned(9 downto 0);
+
+  -- signal left : std_logic;
+  -- signal right : std_logic;
+  -- signal start : std_logic;
 
   signal valid1 : std_logic;
 
@@ -189,18 +194,18 @@ begin
     sdisplay => startdisplay
   );
 
-  nes_impl : nes port map (
-      nes_data,
-      nes_latch,
-      nes_clock,
-      left,
-      right,
-      start
-  );
+  -- nes_impl : nes port map (
+  --     nes_data,
+  --     nes_latch,
+  --     nes_clock,
+  --     left,
+  --     right,
+  --     start
+  -- );
 
   process (clk_pxl) begin
     if rising_edge(clk_pxl) then
-    
+
       --draw paddle and ball
       if (valid1 = '1') then
          if (lives = "00") then
@@ -218,7 +223,7 @@ begin
             else
                 rgb <= "000000";
             end if;
- 
+
 
         end if;
       else
@@ -229,19 +234,32 @@ begin
       --keep in top file
       if (paddle_display = '1' and ball_display = '1') then
         changeY <= '1';
+        frame_update <= '1';
+      -- elsif (brick_display = '1' and ball_display = '1'
+      --and col > brick5_floor + 1-2 pxls and col < brick5_ceil - 1-2 pxls
+      --repeat above line for all lines of bricks
+      --this changes direction of x on the ball if it collides with the side of the brick
+      --brick_floor is the lowest displayed pxl of the brick and ceil is the highest
+        -- changeX <= '1';
+        -- frame_update <= '1';
+      elsif (brick_display = '1' and ball_display = '1') then
+        changeY <= '1';
+        frame_update <= '1';
+      elsif frame_update <= '0' then
+        changeY <= '0';
+      end if;
+
+      if (row = 700 and col = 0 and frame_update = '1') then
+        frame_update <= '0';
       end if;
 
       if (brick_display = '1' and ball_display = '1' and del = '0') then
-        del <= '1';
+          del <= '1';
       else
-	del <= '0';
+	       del <= '0';
       end if;
-	
-      if (brick_display = '0' and paddle_display = '0' and ball_display = '1') then
-	del <= '0';
-	changeY <= '0';
-      end if;
-      
+
+
     end if;
   end process;
 
