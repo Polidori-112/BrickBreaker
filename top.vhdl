@@ -74,8 +74,9 @@ architecture synth of top is
 
         row : in unsigned(9 downto 0);
         col : in unsigned(9 downto 0);
-        del : in std_logic;
-        display : out std_logic
+
+        display : out std_logic;
+        del : in std_logic
       );
   end component;
 
@@ -104,6 +105,7 @@ architecture synth of top is
   signal lives_display : std_logic;
   signal del : std_logic := '0';
   signal startdisplay : std_logic_vector(5 downto 0);
+
   signal lives : unsigned (1 downto 0) := "00";
   signal changeX : std_logic := '0';
   signal changeY : std_logic := '0';
@@ -116,7 +118,6 @@ architecture synth of top is
 
   signal frame_update : std_logic := '0';
 
-  signal brick_switch : std_logic := '0';
   signal level : unsigned (2 downto 0) := "001";
 begin
 
@@ -206,20 +207,13 @@ begin
       --keep in top file
       if (paddle_display = '1' and ball_display = '1') then
         changeY <= '1';
+        frame_update <= '1';
+      elsif frame_update <= '0' then
+        changeY <= '0';
       end if;
 
-
-      if (brick_display = '1' and ball_display = '1' and del = '0') then
-	del <= '1';
-        changeY <= '1'; 	
-      elsif (brick_display = '1' and ball_display = '1' and del ='1') then 
-        changeY <= '0'; 
-      end if;
-
-      if (paddle_display = '0' and brick_display = '0' and ball_display = '1') then
-	changeY <= '0';
-	del <= '0';
-	changeY <= '1';
+      if (row = 700 and col = 0 and frame_update = '1') then
+        frame_update <= '0';
       end if;
       
     end if;
