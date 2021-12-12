@@ -214,12 +214,24 @@ begin
             rgb <= startdisplay;
           else
 
-	           if ((paddle_display = '1')) then
+	        if ((paddle_display = '1')) then
                 rgb <= "110000";
             elsif ((ball_display = '1')) then
                 rgb <= "111111";
             elsif ((brick_display = '1')) then
-                rgb <= "000011";
+                if (col > 159) then
+                    rgb <= "110000";
+                elsif (col > 127) then
+                    rgb <= "001100";
+                elsif (col > 95) then
+                    rgb <= "000011";
+                elsif (col > 63) then
+                    rgb <= "110000";
+                elsif (col > 31) then
+                    rgb <= "001100";
+                else
+                    rgb <= "000011";
+                end if;
             elsif ((lives_display = '1')) then
                 rgb <= "111111";
             else
