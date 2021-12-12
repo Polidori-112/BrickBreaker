@@ -231,13 +231,16 @@ begin
         rgb <= "000000";
       end if;
 
-      --collision with paddle
-      --keep in top file
+      ---------collision-----------
+
+      --paddle and ball
       if (paddle_display = '1' and ball_display = '1') then
         changeY <= '1';
         frame_update <= '1';
+      --brick and ball
+      --change x direction if it hits inbetween the top and bottom of brick
       elsif (brick_display = '1' and ball_display = '1'
-      and ((col < 30) 
+      and ((col < 30)
       or (col < 62 and col > 33)
       or (col < 94 and col > 65)
       or (col < 126 and col > 97)
@@ -245,17 +248,22 @@ begin
       or (col < 190 and col > 161)) and frame_update = '0') then
          changeX <= '1';
          frame_update <= '1';
+      --otherwise change y direction
       elsif (brick_display = '1' and ball_display = '1') then
         changeY <= '1';
         frame_update <= '1';
       elsif frame_update <= '0' then
         changeY <= '0';
+        changeX <= '0';
       end if;
 
+      --used to refresh frame update
+      --prevents changex/changey from being called multiple times in a single collision
       if (row = 700 and col = 0 and frame_update = '1') then
         frame_update <= '0';
       end if;
 
+      --break bricks
       if (brick_display = '1' and ball_display = '1' and del = '0') then
           del <= '1';
       else
