@@ -90,10 +90,20 @@ architecture synth of top is
       );
   end component;
 
+  component startScreen is
+      port (
+          clk : in std_logic;
+          sscreen_row : in unsigned(9 downto 0); -- current sscreen_row of pixels
+          sscreen_col : in unsigned(9 downto 0); -- current sscreen_col of pixels
+          display : out std_logic
+      );
+  end component;
+
   signal paddle_display : std_logic;
   signal ball_display : std_logic;
   signal brick_display : std_logic;
   signal lives_display : std_logic;
+  signal startdisplay : std_logic;
 
   signal lives : unsigned (1 downto 0);
   signal changeX : std_logic := '0';
@@ -107,7 +117,7 @@ architecture synth of top is
 
   signal frame_update : std_logic := '0';
 
-
+  signal level : unsigned (2 downto 0) := "000";
 begin
 
   vga1 : vga port map (
@@ -157,20 +167,30 @@ begin
     display => lives_display
   );
 
+  startvga : startScreen port map (
+    clk => clk_pxl,
+    sscreen_col => col,
+    sscreen_row => row,
+    display => startdisplay
+  );
+
   process (clk_pxl) begin
     if rising_edge(clk_pxl) then
-
+    
+    
       --draw paddle and ball
       if (valid1 = '1') then
-         if (paddle_display = '1') then
+         if ((paddle_display = '1') and (level /= "000")) then
            rgb <= "110000";
-         elsif (ball_display = '1') then
+         elsif ((ball_display = '1') and (level /= "000")) then
            rgb <= "111111";
-         elsif (brick_display = '1') then
+         elsif ((brick_display = '1') and (level /= "000")) then
            rgb <= "000011";
-         elsif (lives_display = '1') then
+         elsif ((lives_display = '1') and (level /= "000")) then
            rgb <= "111111";
-         else
+         elsif ((startdisplay = '1') and (level = "000")) then
+            rgb <= "001100";
+        else
            rgb <= "000000";
          end if;
       else
