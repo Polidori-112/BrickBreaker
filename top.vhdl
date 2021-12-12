@@ -106,7 +106,7 @@ architecture synth of top is
   signal del : std_logic := '0';
   signal startdisplay : std_logic_vector(5 downto 0);
 
-  signal lives : unsigned (1 downto 0) := "00";
+  signal lives : unsigned (1 downto 0) := "11";
   signal changeX : std_logic := '0';
   signal changeY : std_logic := '0';
   signal vel : unsigned(2 downto 0);
@@ -185,7 +185,7 @@ begin
 
             rgb <= startdisplay;
          else
-	    if ((paddle_display = '1')) then
+	     if ((paddle_display = '1')) then
                 rgb <= "110000";
             elsif ((ball_display = '1')) then
                 rgb <= "111111";

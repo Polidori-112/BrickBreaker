@@ -25,18 +25,27 @@ architecture synth of ball is
   signal ballx : unsigned(9 downto 0) := "0101000000"; -- current x pos of ball
   signal bally : unsigned(9 downto 0) := "0011110000";-- current y pos of ball
 
-  signal play : std_logic := '0';
-
   signal velocity : unsigned(2 downto 0) := "010";
 
   signal invertx : std_logic := '0';
   signal inverty : std_logic := '0';
+  
+  signal nextLife : unsigned(1 downto 0) := "10";
 
 begin
 
     process (clk) begin
         if rising_edge(clk) then
-            if ((lives /= "00")) then
+        
+            --this means the start/end screen is displaying
+            --when the start or end screen is displaying, if it gets start
+            --set all these things
+            if ((lives = "00") and (start = '0')) then
+                lives <= "11";
+                ballx <= "0101000000";
+                bally <= "0011110000";
+            --if we have lives play the game
+            elsif ((lives /= "00")) then
               --draws ball
                 if (vga_row > (ballx - 5) and vga_row < (ballx + 5)
                 and vga_col > (bally - 5) and vga_col < (bally + 5)) then
@@ -47,7 +56,7 @@ begin
                 if (vga_row = 481 and vga_col = 0) then
 
                 --inverts ball direction
-                if ((ballx <= 50) or (ballx >= 580) or changeX = '1') then
+                if ((ballx <= 5) or (ballx >= 634) or changeX = '1') then
                     invertx <= '1';
                 else
                     invertx <= '0';
@@ -59,11 +68,14 @@ begin
                     inverty <= '0';
                 end if;
                 
-                --Loose a life if ball falls off
                 if (bally >= 475) then
-                  --play <= '0';
-                 lives <= lives - 1;
+                    lives <= nextLife;
+                    inverty <=  '1';
+                else
+                    nextLife <= lives - 1;
                 end if;
+                
+                
                 --moves ball
                 if (dirx = '1') then
                     ballx <= ballx + velocity;
@@ -83,11 +95,9 @@ begin
              else
 
                velocity <= "010";
-               --play <= '0';
                ballx <= "0101000000";
                bally <= "0011110000";
                if (not start) then
-                 --play <= '1';
                  velocity <= "010";
                end if;
 
@@ -97,7 +107,7 @@ begin
 
     --inverts x and y direction
     --must use rising edge function here
-    process(changeX, changeY, invertx, inverty) begin
+    process(changeX, invertx, changeY, inverty) begin
       if (rising_edge(invertx)) then
         dirx <= not dirx;
         --changeX <= '0';
