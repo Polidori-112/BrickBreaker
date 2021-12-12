@@ -211,6 +211,8 @@ begin
 
       if (brick_display = '1' and ball_display = '1' and del = '0') then
         del <= '1';
+      else
+	del <= '0';
       end if;
 	
       if (brick_display = '0' and paddle_display = '0' and ball_display = '1') then
