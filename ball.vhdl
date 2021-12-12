@@ -47,13 +47,13 @@ begin
                 if (vga_row = 481 and vga_col = 0) then
 
                 --inverts ball direction
-                if (ballx <= 5 or ballx >= 634 or changeX = '1') then
+                if ((ballx <= 50) or (ballx >= 580) or changeX = '1') then
                     invertx <= '1';
                 else
                     invertx <= '0';
                 end if;
 
-                if ((bally <= 5) or (bally >= 472) or changeY = '1') then
+                if ((bally <= 10) or (bally >= 472) or changeY = '1') then
                     inverty <= '1';
                 else
                     inverty <= '0';
@@ -61,7 +61,7 @@ begin
                 
                 --Loose a life if ball falls off
                 if (bally >= 475) then
-                  play <= '0';
+                  --play <= '0';
                   lives <= lives - 1;
                 end if;
                 --moves ball
@@ -83,11 +83,11 @@ begin
              else
 
                velocity <= "010";
-               play <= '0';
+               --play <= '0';
                ballx <= "0101000000";
                bally <= "0011110000";
                if (not start) then
-                 play <= '1';
+                 --play <= '1';
                  velocity <= "010";
                end if;
 
