@@ -117,7 +117,7 @@ architecture synth of top is
 
   signal frame_update : std_logic := '0';
 
-  signal level : unsigned (2 downto 0) := "000";
+  signal level : unsigned (2 downto 0) := "001";
 begin
 
   vga1 : vga port map (
