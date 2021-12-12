@@ -132,6 +132,7 @@ architecture synth of top is
   -- signal right : std_logic;
   -- signal start : std_logic;
 
+
   signal valid1 : std_logic;
 
   signal frame_update : std_logic := '0';
@@ -235,13 +236,15 @@ begin
       if (paddle_display = '1' and ball_display = '1') then
         changeY <= '1';
         frame_update <= '1';
-      -- elsif (brick_display = '1' and ball_display = '1'
-      --and col > brick5_floor + 1-2 pxls and col < brick5_ceil - 1-2 pxls
-      --repeat above line for all lines of bricks
-      --this changes direction of x on the ball if it collides with the side of the brick
-      --brick_floor is the lowest displayed pxl of the brick and ceil is the highest
-        -- changeX <= '1';
-        -- frame_update <= '1';
+      elsif (brick_display = '1' and ball_display = '1'
+      and ((col < 30) 
+      or (col < 62 and col > 33)
+      or (col < 94 and col > 65)
+      or (col < 126 and col > 97)
+      or (col < 158 and col > 129)
+      or (col < 190 and col > 161)) and frame_update = '0') then
+         changeX <= '1';
+         frame_update <= '1';
       elsif (brick_display = '1' and ball_display = '1') then
         changeY <= '1';
         frame_update <= '1';
