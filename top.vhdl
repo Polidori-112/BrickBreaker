@@ -95,7 +95,7 @@ architecture synth of top is
           clk : in std_logic;
           sscreen_row : in unsigned(9 downto 0); -- current sscreen_row of pixels
           sscreen_col : in unsigned(9 downto 0); -- current sscreen_col of pixels
-          display : out std_logic
+          sdisplay : out std_logic_vector(5 downto 0)
       );
   end component;
 
@@ -103,9 +103,9 @@ architecture synth of top is
   signal ball_display : std_logic;
   signal brick_display : std_logic;
   signal lives_display : std_logic;
-  signal startdisplay : std_logic;
+  signal startdisplay : std_logic_vector(5 downto 0);
 
-  signal lives : unsigned (1 downto 0);
+  signal lives : unsigned (1 downto 0) := "00";
   signal changeX : std_logic := '0';
   signal changeY : std_logic := '0';
   signal vel : unsigned(2 downto 0);
@@ -171,27 +171,28 @@ begin
     clk => clk_pxl,
     sscreen_col => col,
     sscreen_row => row,
-    display => startdisplay
+    sdisplay => startdisplay
   );
 
   process (clk_pxl) begin
     if rising_edge(clk_pxl) then
     
-    
       --draw paddle and ball
       if (valid1 = '1') then
-         if ((paddle_display = '1') and (level /= "000")) then
-           rgb <= "110000";
-         elsif ((ball_display = '1') and (level /= "000")) then
-           rgb <= "111111";
-         elsif ((brick_display = '1') and (level /= "000")) then
-           rgb <= "000011";
-         elsif ((lives_display = '1') and (level /= "000")) then
-           rgb <= "111111";
-         elsif ((startdisplay = '1') and (level = "000")) then
-            rgb <= "001100";
-        else
-           rgb <= "000000";
+         if (lives = "00") then
+            rgb <= startdisplay;
+         else
+            if ((paddle_display = '1')) then
+                rgb <= "110000";
+            elsif ((ball_display = '1')) then
+                rgb <= "111111";
+            elsif ((brick_display = '1')) then
+                rgb <= "000011";
+            elsif ((lives_display = '1')) then
+                rgb <= "111111";
+            else
+                rgb <= "000000";
+            end if;
          end if;
       else
         rgb <= "000000";
