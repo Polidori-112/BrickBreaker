@@ -11,26 +11,49 @@ entity brick is
 
       row : in unsigned(9 downto 0);
       col : in unsigned(9 downto 0);
-
       display : out std_logic
     );
 end brick;
 
 architecture synth of brick is
-  signal bricks : std_logic_vector(59 downto 0) :=  
-                                            "1110101010" &
-                                            "1010101010" &
-                                            "1010101010" &
-                                            "1010101010" &
-                                            "1010101010" &
+  signal brick0 : std_logic_vector(9 downto 0) :=  
                                             "1010101010"; 
+  signal brick1 : std_logic_vector(9 downto 0) :=  
+                                            "0101010101"; 
+  signal brick2 : std_logic_vector(9 downto 0) :=  
+                                            "1010101010";
+  signal brick3 : std_logic_vector(9 downto 0) :=  
+                                            "0101010101";
+  signal brick4 : std_logic_vector(9 downto 0) :=  
+                                            "1010101010";
+  signal brick5 : std_logic_vector(9 downto 0) :=  
+                                            "0101010101";
+
+
+
 begin
 
 --Only displays last brick due to how for loops work in vhdl
 process (clk) begin
 
 	if rising_edge(clk) then
-		display <= bricks(59 - (to_integer(row(9 downto 5)) * 10 + to_integer(col(9 downto 6))));
+		case col(9 downto 5) is
+			when "00000" =>
+				display <= brick0(9 - to_integer(row(9 downto 6)));
+	        	when "00001" =>
+				display <= brick1(9 - to_integer(row(9 downto 6)));
+                	when "00010" =>
+				display <= brick2(9 - to_integer(row(9 downto 6)));
+	        	when "00011" =>
+				display <= brick3(9 - to_integer(row(9 downto 6)));
+                 	when "00100" =>
+				display <= brick4(9 - to_integer(row(9 downto 6)));
+	        	when "00101" =>
+				display <= brick5(9 - to_integer(row(9 downto 6)));
+			when others =>
+				display <= '0';
+		end case;
+
 	end if;
 
 end process;

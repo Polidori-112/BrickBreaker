@@ -1,22 +1,22 @@
 v 4
-file . "brick_test.vhdl" "27205ad2525f0ee32eaf8f70872eeb3af50686c8" "20211212020932.562":
-  entity brick_test at 1( 0) + 0 on 45;
-  architecture test of brick_test at 8( 108) + 0 on 46;
-file . "ball.vhdl" "5665e03c82cd975687cd6ac38856932e56f1d668" "20211212012324.247":
+file . "vga.vhdl" "f3d2ffc184f2a8d0ced99db2adfa5edebf2a81bf" "20211212034516.033":
+  entity vga at 1( 0) + 0 on 23;
+  architecture synth of vga at 20( 370) + 0 on 24;
+file . "top.vhdl" "a32f6e0199f2dd83a7baf547c12b47509d0f0675" "20211212034516.032":
+  entity top at 2( 1) + 0 on 21;
+  architecture synth of top at 29( 508) + 0 on 22;
+file . "pll.vhdl" "c586c84d6d757a32a5a144700f6b9bce6d6b8565" "20211212034516.030":
+  entity pll at 1( 0) + 0 on 19;
+  architecture synth of pll at 13( 211) + 0 on 20;
+file . "paddle.vhdl" "d72dff5e5882380b51232925743ff053634116ab" "20211212034516.029":
+  entity paddle at 2( 1) + 0 on 17;
+  architecture synth of paddle at 21( 317) + 0 on 18;
+file . "lives.vhdl" "8b224c83a129502d7bfbc4f351043da7bc32a85b" "20211212034516.028":
+  entity live at 1( 0) + 0 on 15;
+  architecture synth of live at 15( 360) + 0 on 16;
+file . "brick.vhdl" "31d629ac72b0f57a06e8fbf420e47d001290a457" "20211212034516.027":
+  entity brick at 1( 0) + 0 on 13;
+  architecture synth of brick at 18( 280) + 0 on 14;
+file . "ball.vhdl" "5665e03c82cd975687cd6ac38856932e56f1d668" "20211212034516.026":
   entity ball at 1( 0) + 0 on 11;
   architecture synth of ball at 21( 705) + 0 on 12;
-file . "brick.vhdl" "04a59632d79d28a48e3f125e790d79a1f99f981e" "20211212020932.563":
-  entity brick at 1( 0) + 0 on 47;
-  architecture synth of brick at 19( 281) + 0 on 48;
-file . "paddle.vhdl" "d72dff5e5882380b51232925743ff053634116ab" "20211212012324.251":
-  entity paddle at 2( 1) + 0 on 15;
-  architecture synth of paddle at 21( 317) + 0 on 16;
-file . "pll.vhdl" "c586c84d6d757a32a5a144700f6b9bce6d6b8565" "20211212012324.252":
-  entity pll at 1( 0) + 0 on 17;
-  architecture synth of pll at 13( 211) + 0 on 18;
-file . "top.vhdl" "54a1073e29df08f5165db2e9927560cdddd6ec34" "20211212012324.254":
-  entity top at 2( 1) + 0 on 19;
-  architecture synth of top at 29( 508) + 0 on 20;
-file . "vga.vhdl" "f3d2ffc184f2a8d0ced99db2adfa5edebf2a81bf" "20211212012324.255":
-  entity vga at 1( 0) + 0 on 21;
-  architecture synth of vga at 20( 370) + 0 on 22;
