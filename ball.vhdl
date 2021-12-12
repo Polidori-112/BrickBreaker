@@ -25,27 +25,18 @@ architecture synth of ball is
   signal ballx : unsigned(9 downto 0) := "0101000000"; -- current x pos of ball
   signal bally : unsigned(9 downto 0) := "0011110000";-- current y pos of ball
 
+  signal play : std_logic := '0';
+
   signal velocity : unsigned(2 downto 0) := "010";
 
   signal invertx : std_logic := '0';
   signal inverty : std_logic := '0';
-  
-  signal nextLife : unsigned(1 downto 0) := "10";
 
 begin
 
     process (clk) begin
         if rising_edge(clk) then
-        
-            --this means the start/end screen is displaying
-            --when the start or end screen is displaying, if it gets start
-            --set all these things
-            if ((lives = "00") and (start = '0')) then
-                lives <= "11";
-                ballx <= "0101000000";
-                bally <= "0011110000";
-            --if we have lives play the game
-            elsif ((lives /= "00")) then
+            if ((lives /= "00")) then
               --draws ball
                 if (vga_row > (ballx - 5) and vga_row < (ballx + 5)
                 and vga_col > (bally - 5) and vga_col < (bally + 5)) then
@@ -56,7 +47,7 @@ begin
                 if (vga_row = 481 and vga_col = 0) then
 
                 --inverts ball direction
-                if ((ballx <= 5) or (ballx >= 634) or changeX = '1') then
+                if ((ballx <= 50) or (ballx >= 580) or changeX = '1') then
                     invertx <= '1';
                 else
                     invertx <= '0';
@@ -68,14 +59,11 @@ begin
                     inverty <= '0';
                 end if;
                 
+                --Loose a life if ball falls off
                 if (bally >= 475) then
-                    lives <= nextLife;
-                    inverty <=  '1';
-                else
-                    nextLife <= lives - 1;
+                  --play <= '0';
+ --                 lives <= lives - 1;
                 end if;
-                
-                
                 --moves ball
                 if (dirx = '1') then
                     ballx <= ballx + velocity;
@@ -95,9 +83,11 @@ begin
              else
 
                velocity <= "010";
+               --play <= '0';
                ballx <= "0101000000";
                bally <= "0011110000";
                if (not start) then
+                 --play <= '1';
                  velocity <= "010";
                end if;
 
@@ -107,7 +97,7 @@ begin
 
     --inverts x and y direction
     --must use rising edge function here
-    process(changeX, invertx, changeY, inverty) begin
+    process(invertx, inverty) begin
       if (rising_edge(invertx)) then
         dirx <= not dirx;
         --changeX <= '0';
@@ -119,3 +109,57 @@ begin
       end if;
     end process;
 end;
+
+-- if (play = '1' and not (lives = "00")) then
+
+--     if (ballx <= 5) then
+--       dirx <= '1';
+--     elsif (ballx >= 635) then
+--       dirx <= '0';
+--     elsif (bally <= 5) then
+--       diry <= '1';
+--     elsif (bally >= 445 and ballx <= (paddle + 55) and ballx >= (paddle - 50)) then
+--       diry <= '0';
+
+--       --change ball speed based on where it lands on Paddle
+-- --buggy, needs fixing
+--  if (ballx <= paddle - 30) then
+--    if (vel = "001" and dirx = '1') then
+--      dirx <= '0';
+--    elsif (vel = "100" and dirx = '0') then
+--      vel <= vel;
+--    elsif (dirx = '0') then
+--      vel <= vel + 1;
+--    elsif (dirx = '1') then
+--      vel <= vel - 1;
+--    end if;
+--  elsif (ballx >= paddle + 30) then
+--    if (vel = "001" and dirx = '0') then
+--      dirx <= '1';
+--    elsif (vel = "100" and dirx = '1') then
+--      vel <= vel;
+--    elsif (dirx = '1') then
+--      vel <= vel + 1;
+--    elsif (dirx = '0') then
+--      vel <= vel - 1;
+--    end if;
+--  end if;
+
+-- elsif (bally > 450) then
+-- lives <= lives - 1;
+-- play <= '0';
+-- end if;
+
+-- if (dirx = '1') then
+-- if (vel = "010") then
+--    ballx <= ballx + 3;
+-- else
+--    ballx <= ballx + vel;
+-- end if;
+-- elsif (dirx = '0') then
+-- if (vel = "010") then
+--    ballx <= ballx - 3;
+-- else
+--    ballx <= ballx - vel;
+-- end if;
+-- end if;

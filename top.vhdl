@@ -181,9 +181,10 @@ begin
       --draw paddle and ball
       if (valid1 = '1') then
          if (lives = "00") then
+
             rgb <= startdisplay;
          else
-            if ((paddle_display = '1')) then
+	    if ((paddle_display = '1')) then
                 rgb <= "110000";
             elsif ((ball_display = '1')) then
                 rgb <= "111111";
@@ -194,7 +195,9 @@ begin
             else
                 rgb <= "000000";
             end if;
-         end if;
+ 
+
+        end if;
       else
         rgb <= "000000";
       end if;
@@ -203,32 +206,22 @@ begin
       --keep in top file
       if (paddle_display = '1' and ball_display = '1') then
         changeY <= '1';
-	frame_update <= '1';
-      elsif frame_update = '0' then
-        changeY <= '0';
       end if;
 
 
-      if (brick_display = '1' and ball_display = '1') then
-	brick_switch <= '1';
+      if (brick_display = '1' and ball_display = '1' and del = '0') then
 	del <= '1';
         changeY <= '1'; 	
-      elsif brick_switch = '0' then 
+      elsif (brick_display = '1' and ball_display = '1' and del ='1') then 
         changeY <= '0'; 
       end if;
-      
 
-      if (row = 700 and col = 0) then
-	if (frame_update = '1') then
-		frame_update <= '0';
-		
-	end if;
-	if (brick_switch = '1') then
-		brick_switch <= '0';
-		del <= '0';
-	end if;
+      if (paddle_display = '0' and brick_display = '0' and ball_display = '1') then
+	changeY <= '0';
+	del <= '0';
+	changeY <= '1';
       end if;
-
+      
     end if;
   end process;
 
