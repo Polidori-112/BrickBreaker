@@ -42,7 +42,6 @@ process (clk) begin
 			when "00000" =>
 				display <= brick0(9 - to_integer(row(9 downto 6)));
 				brick0(9 - to_integer(row(9 downto 6))) <= '0' when (del = '1') else brick0(9 - to_integer(row(9 downto 6)));
-				
 			when "00001" =>
 				display <= brick1(9 - to_integer(row(9 downto 6)));
                                 brick1(9 - to_integer(row(9 downto 6))) <= '0' when (del = '1') else brick1(9 - to_integer(row(9 downto 6)));

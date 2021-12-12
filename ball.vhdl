@@ -62,7 +62,7 @@ begin
                 --Loose a life if ball falls off
                 if (bally >= 475) then
                   --play <= '0';
- --                 lives <= lives - 1;
+                 lives <= lives - 1;
                 end if;
                 --moves ball
                 if (dirx = '1') then
@@ -97,7 +97,7 @@ begin
 
     --inverts x and y direction
     --must use rising edge function here
-    process(invertx, inverty) begin
+    process(changeX, changeY, invertx, inverty) begin
       if (rising_edge(invertx)) then
         dirx <= not dirx;
         --changeX <= '0';

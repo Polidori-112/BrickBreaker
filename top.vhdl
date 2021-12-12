@@ -207,13 +207,15 @@ begin
       --keep in top file
       if (paddle_display = '1' and ball_display = '1') then
         changeY <= '1';
-        frame_update <= '1';
-      elsif frame_update <= '0' then
-        changeY <= '0';
       end if;
 
-      if (row = 700 and col = 0 and frame_update = '1') then
-        frame_update <= '0';
+      if (brick_display = '1' and ball_display = '1' and del = '0') then
+        del <= '1';
+      end if;
+	
+      if (brick_display = '0' and paddle_display = '0' and ball_display = '1') then
+	del <= '0';
+	changeY <= '0';
       end if;
       
     end if;

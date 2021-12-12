@@ -1,28 +1,28 @@
 v 4
-file . "vga.vhdl" "f3d2ffc184f2a8d0ced99db2adfa5edebf2a81bf" "20211212065650.952":
+file . "vga.vhdl" "f3d2ffc184f2a8d0ced99db2adfa5edebf2a81bf" "20211212072458.945":
   entity vga at 1( 0) + 0 on 27;
   architecture synth of vga at 20( 370) + 0 on 28;
-file . "top.vhdl" "a693c8723c2e67293354b4a49ec901731cb62d45" "20211212065650.951":
+file . "top.vhdl" "b68195e6c3aaf3e8e41058cb57c8963f416ca06b" "20211212072458.943":
   entity top at 1( 0) + 0 on 25;
   architecture synth of top at 28( 507) + 0 on 26;
-file . "start.vhdl" "955aee77f6838a6905b076ccc0d42d74b9c08beb" "20211212065650.948":
+file . "start.vhdl" "955aee77f6838a6905b076ccc0d42d74b9c08beb" "20211212072458.941":
   entity startscreen at 1( 0) + 0 on 23;
   architecture synth of startscreen at 17( 418) + 0 on 24;
-file . "pll.vhdl" "c586c84d6d757a32a5a144700f6b9bce6d6b8565" "20211212065650.946":
+file . "pll.vhdl" "c586c84d6d757a32a5a144700f6b9bce6d6b8565" "20211212072458.939":
   entity pll at 1( 0) + 0 on 21;
   architecture synth of pll at 13( 211) + 0 on 22;
-file . "paddle.vhdl" "d72dff5e5882380b51232925743ff053634116ab" "20211212065650.945":
+file . "paddle.vhdl" "d72dff5e5882380b51232925743ff053634116ab" "20211212072458.938":
   entity paddle at 2( 1) + 0 on 19;
   architecture synth of paddle at 21( 317) + 0 on 20;
-file . "lives.vhdl" "ea3c9e18945ee79e22ecb4d4343275d100fab110" "20211212065650.943":
+file . "lives.vhdl" "ea3c9e18945ee79e22ecb4d4343275d100fab110" "20211212072458.937":
   entity live at 1( 0) + 0 on 17;
   architecture synth of live at 15( 360) + 0 on 18;
-file . "brick_test.vhdl" "27205ad2525f0ee32eaf8f70872eeb3af50686c8" "20211212065650.942":
+file . "brick_test.vhdl" "27205ad2525f0ee32eaf8f70872eeb3af50686c8" "20211212072458.936":
   entity brick_test at 1( 0) + 0 on 15;
   architecture test of brick_test at 8( 108) + 0 on 16;
-file . "brick.vhdl" "2edf867d685dcdf95aa0e23bcd8da26cb6a8d64e" "20211212065650.940":
+file . "brick.vhdl" "49f9d3f1ab026f4956b159089c98dd5595702d48" "20211212072458.934":
   entity brick at 1( 0) + 0 on 13;
   architecture synth of brick at 19( 306) + 0 on 14;
-file . "ball.vhdl" "fef514a31ed923d2df389307bac7403bb8adce9d" "20211212065650.938":
+file . "ball.vhdl" "cef86520520095285d619ace1dfec73569ef18e8" "20211212072458.933":
   entity ball at 1( 0) + 0 on 11;
   architecture synth of ball at 21( 705) + 0 on 12;
