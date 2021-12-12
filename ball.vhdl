@@ -47,11 +47,7 @@ begin
                 if (vga_row = 481 and vga_col = 0) then
 
                 --inverts ball direction
-<<<<<<< HEAD
-                if (ballx <= 5 or ballx >= 634 or changeX) then
-=======
                 if (ballx <= 5 or ballx >= 634 or changeX = '1') then
->>>>>>> 06426918c80e7eebc94941585015fd1a3bd1e24f
                     invertx <= '1';
                 else
                     invertx <= '0';

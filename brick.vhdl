@@ -17,30 +17,22 @@ entity brick is
 end brick;
 
 architecture synth of brick is
-  signal bricks : unsigned(59 downto 0) := "0000111010" &
-                                            "0000000001" &
-                                            "0000000001" &
-                                            "0000000001" &
-                                            "0000000011" &
-                                            "0001111001";
+  signal bricks : std_logic_vector(59 downto 0) :=  
+                                            "1110101010" &
+                                            "1010101010" &
+                                            "1010101010" &
+                                            "1010101010" &
+                                            "1010101010" &
+                                            "1010101010"; 
 begin
 
 --Only displays last brick due to how for loops work in vhdl
 process (clk) begin
-  if rising_edge(clk) then
-  --for j in 0 to 5 loop
-    for i in 0 to 9 loop
-        if (bricks(i) = '1') then
-          if (row > (5 + (i * 45)) and row < (45 + (i * 45))
-          and col > (5) and col < (25)) then
-            display <= '1';
-          else
-            display <= '0';
-          end if;
-        end if;
-    end loop;
-  --end loop;
-end if;
+
+	if rising_edge(clk) then
+		display <= bricks(59 - (to_integer(row(9 downto 5)) * 10 + to_integer(col(9 downto 6))));
+	end if;
+
 end process;
 
 end;
