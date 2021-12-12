@@ -80,13 +80,24 @@ architecture synth of top is
       );
   end component;
 
+  component live is
+      port (
+          clk : in std_logic;
+          lives_row : in unsigned(9 downto 0); -- current row of pixels
+          lives_col : in unsigned(9 downto 0); -- current col of pixels
+          livesCount : in unsigned(1 downto 0);
+          display : out std_logic
+      );
+  end component;
+
   signal paddle_display : std_logic;
   signal ball_display : std_logic;
   signal brick_display : std_logic;
+  signal lives_display : std_logic;
 
   signal lives : unsigned (1 downto 0);
-  signal changeX : std_logic;
-  signal changeY : std_logic;
+  signal changeX : std_logic := '0';
+  signal changeY : std_logic := '0';
   signal vel : unsigned(2 downto 0);
 
   signal row : unsigned(9 downto 0);
@@ -138,6 +149,14 @@ begin
     display => brick_display
   );
 
+  livevga : live port map (
+    clk => clk_pxl,
+    lives_row => row,
+    lives_col => col,
+    livesCount => lives,
+    display => lives_display
+  );
+
   process (clk_pxl) begin
     if rising_edge(clk_pxl) then
 
@@ -149,6 +168,8 @@ begin
            rgb <= "111111";
          elsif (brick_display = '1') then
            rgb <= "000011";
+         elsif (lives_display = '1') then
+           rgb <= "111111";
          else
            rgb <= "000000";
          end if;
