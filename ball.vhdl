@@ -8,7 +8,7 @@ entity ball is
         clk : in std_logic;
         -- vga_row : in unsigned(9 downto 0); -- current row of pixels
         -- vga_col : in unsigned(9 downto 0); -- current col of pixels
-        lives : out unsigned(1 downto 0) := "11";
+        lives : out unsigned(1 downto 0) := "00";
         changeX : in std_logic;
         changeY : in std_logic;
         next_velocity : in unsigned(2 downto 0);
@@ -22,21 +22,26 @@ architecture synth of ball is
 
   signal dirx : std_logic := '1';
   signal diry : std_logic := '1';
-  signal ballx : unsigned(9 downto 0) := "0101000000"; -- current x pos of ball
+  signal ballx : unsigned(9 downto 0) := "0101000000"; -- current x pos of ball "0101000000" was og
   signal bally : unsigned(9 downto 0) := "0011110000";-- current y pos of ball
 
   signal velocity : unsigned(2 downto 0) := "010";
 
   signal invertx : std_logic := '0';
   signal inverty : std_logic := '0';
-  
+
   signal nextLife : unsigned(1 downto 0) := "10";
+
+  signal play : std_logic := '0';
+  signal temp : std_logic := '0';
+  signal die : std_logic := '0';
+
 
 begin
 
     process (clk) begin
         if rising_edge(clk) then
-        
+
             --this means the start/end screen is displaying
             --when the start or end screen is displaying, if it gets start
             --set all these things
@@ -44,8 +49,9 @@ begin
                 lives <= "11";
                 ballx <= "0101000000";
                 bally <= "0011110000";
+                play <= '0';
             --if we have lives play the game
-            elsif ((lives /= "00")) then
+          elsif ((lives /= "00") and play = '1') then
               --draws ball
                 if (vga_row > (ballx - 5) and vga_row < (ballx + 5)
                 and vga_col > (bally - 5) and vga_col < (bally + 5)) then
@@ -62,20 +68,22 @@ begin
                     invertx <= '0';
                 end if;
 
-                if ((bally <= 10) or changeY = '1') then
+                if ((bally <= 5) or changeY = '1') then
                     inverty <= '1';
                 else
                     inverty <= '0';
                 end if;
-                
+
                 if (bally >= 475) then
-                    lives <= nextLife;
-                    inverty <=  '1';
+                    -- lives <= nextLife;
+                    play <= '0';
+                    lives <= lives - '1';
+                    die <= '1';
                 else
-                    nextLife <= lives - 1;
+                    die <= '0';
                 end if;
-                
-                
+
+
                 --moves ball
                 if (dirx = '1') then
                     ballx <= ballx + velocity;
@@ -92,13 +100,23 @@ begin
                 end if;
               end if;
 
-             else
+            elsif (play = '0') then
 
-               velocity <= "010";
+               velocity <= "000";
                ballx <= "0101000000";
                bally <= "0011110000";
-               if (not start) then
+               die <= '0';
+
+               if (start = '0' and temp = '1') then
                  velocity <= "010";
+                 play <= '1';
+               end if;
+
+               if (vga_row > (ballx - 5) and vga_row < (ballx + 5)
+               and vga_col > (bally - 5) and vga_col < (bally + 5)) then
+                   display <= '1';
+               else
+                   display <= '0';
                end if;
 
          end if;
@@ -107,7 +125,7 @@ begin
 
     --inverts x and y direction
     --must use rising edge function here
-    process(changeX, invertx, changeY, inverty) begin
+    process(invertx, inverty, start, play, die) begin
       if (rising_edge(invertx)) then
         dirx <= not dirx;
         --changeX <= '0';
@@ -117,5 +135,15 @@ begin
         diry <= not diry;
         --changeY <= '0';
       end if;
+
+      if (rising_edge(start)) then
+        temp <= '1';
+      end if;
+
+      if die then
+        temp <= '0';
+      end if;
+
     end process;
+
 end;
