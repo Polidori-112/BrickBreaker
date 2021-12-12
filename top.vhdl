@@ -75,7 +75,8 @@ architecture synth of top is
         row : in unsigned(9 downto 0);
         col : in unsigned(9 downto 0);
 
-        display : out std_logic
+        display : out std_logic;
+        del : in std_logic
       );
   end component;
 
@@ -102,6 +103,7 @@ architecture synth of top is
   signal ball_display : std_logic;
   signal brick_display : std_logic;
   signal lives_display : std_logic;
+  signal del : std_logic := '0';
   signal startdisplay : std_logic_vector(5 downto 0);
 
   signal lives : unsigned (1 downto 0) := "00";
@@ -155,6 +157,7 @@ begin
     clk => clk_pxl,
     row => row,
     col => col,
+    del => del,
     display => brick_display
   );
 
