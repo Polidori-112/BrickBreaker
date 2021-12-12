@@ -1,0 +1,41 @@
+v 4
+<<<<<<< HEAD
+file . "vga.vhdl" "f3d2ffc184f2a8d0ced99db2adfa5edebf2a81bf" "20211211175331.155":
+  entity vga at 1( 0) + 0 on 21;
+  architecture synth of vga at 20( 370) + 0 on 22;
+file . "top.vhdl" "df32a193c4b07aabb102e6948647f8486ae32938" "20211211175331.154":
+  entity top at 2( 1) + 0 on 19;
+  architecture synth of top at 29( 491) + 0 on 20;
+file . "pll.vhdl" "c586c84d6d757a32a5a144700f6b9bce6d6b8565" "20211211175331.151":
+  entity pll at 1( 0) + 0 on 17;
+  architecture synth of pll at 13( 211) + 0 on 18;
+file . "paddle.vhdl" "2dc62e261bf26ac3310553116a27a7995108e216" "20211211175331.150":
+  entity paddle at 2( 1) + 0 on 15;
+  architecture synth of paddle at 21( 317) + 0 on 16;
+file . "brick.vhdl" "7d59aacc5ac48b46bb9e0f93a64914a14df110f1" "20211211175331.149":
+  entity brick at 1( 0) + 0 on 13;
+  architecture synth of brick at 19( 281) + 0 on 14;
+file . "ball.vhdl" "b125296be783fa73758dd0dfd0895f4434452700" "20211211175331.147":
+=======
+file . "vga.vhdl" "50402b7d171598f24e17c933e6fc11cee135b37d" "20211211230254.685":
+  entity vga at 1( 0) + 0 on 23;
+  architecture synth of vga at 19( 341) + 0 on 24;
+file . "top.vhdl" "18dab6e438b0fb40681fab74bf977618f8fac05b" "20211211230254.684":
+  entity top at 1( 0) + 0 on 21;
+  architecture synth of top at 25( 466) + 0 on 22;
+file . "rom.vhdl" "d61ff7b1495906108f3858a309f79dc74b1b65a3" "20211211230254.678":
+  entity rom at 1( 0) + 0 on 19;
+  architecture rtl of rom at 19( 449) + 0 on 20;
+file . "pll.vhdl" "c586c84d6d757a32a5a144700f6b9bce6d6b8565" "20211211230254.676":
+  entity pll at 1( 0) + 0 on 17;
+  architecture synth of pll at 13( 211) + 0 on 18;
+file . "paddle.vhdl" "d72dff5e5882380b51232925743ff053634116ab" "20211211230254.675":
+  entity paddle at 2( 1) + 0 on 15;
+  architecture synth of paddle at 21( 317) + 0 on 16;
+file . "brick.vhdl" "ef519f4720a59c8ae9c753f43b8d4e77c58105c3" "20211211230254.673":
+  entity brick at 1( 0) + 0 on 13;
+  architecture synth of brick at 19( 281) + 0 on 14;
+file . "ball.vhdl" "5665e03c82cd975687cd6ac38856932e56f1d668" "20211211230254.671":
+>>>>>>> 06426918c80e7eebc94941585015fd1a3bd1e24f
+  entity ball at 1( 0) + 0 on 11;
+  architecture synth of ball at 21( 705) + 0 on 12;

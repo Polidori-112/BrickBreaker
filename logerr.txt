@@ -1,0 +1,7 @@
+++ ghdl -a --std=08 pll.vhdl rom.vhdl top.vhdl vga.vhdl
+top.vhdl:472:11: no declaration for "bally_flip"
+      if (bally_flip = '1') then
+          ^
+top.vhdl:474:9: no declaration for "bally_flip"
+        bally_flip <= '0';
+        ^
