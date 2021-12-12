@@ -7,10 +7,6 @@ use STD.textio.all;
 
 entity top is
     port(
-      left : in std_logic;
-      right : in std_logic;
-      start : in std_logic;
-
       clk_12M : in std_logic;
       clk_pxl : out std_logic; --use this clock
       clk_locked2 : out std_logic;
@@ -18,6 +14,9 @@ entity top is
       VSYNC1 : out std_logic;
       led : out std_logic;
       led1 : out std_logic;
+      nes_data : in std_logic;
+      nes_latch : out std_logic;
+      nes_clock : out std_logic;
 
       rgb : out std_logic_vector(5 downto 0)
       );
@@ -26,6 +25,17 @@ end top;
 
 
 architecture synth of top is
+
+  component nes is
+     port(
+       data : in std_logic;
+       latch : out std_logic;
+       clock : out std_logic;
+       left : out std_logic;
+       right : out std_logic;
+       start : out std_logic
+     );
+  end component;
 
   component vga is
       port(
@@ -89,7 +99,7 @@ architecture synth of top is
           display : out std_logic
       );
   end component;
-
+ 
   component startScreen is
       port (
           clk : in std_logic;
@@ -106,6 +116,9 @@ architecture synth of top is
   signal del : std_logic := '0';
   signal startdisplay : std_logic_vector(5 downto 0);
 
+  signal left : std_logic;
+  signal right : std_logic;
+  signal start : std_logic;
   signal lives : unsigned (1 downto 0) := "11";
   signal changeX : std_logic := '0';
   signal changeY : std_logic := '0';
@@ -174,6 +187,15 @@ begin
     sscreen_col => col,
     sscreen_row => row,
     sdisplay => startdisplay
+  );
+
+  nes_impl : nes port map (
+      nes_data,
+      nes_latch,
+      nes_clock,
+      left,
+      right,
+      start
   );
 
   process (clk_pxl) begin
