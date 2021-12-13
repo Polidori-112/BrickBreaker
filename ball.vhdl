@@ -23,7 +23,7 @@ architecture synth of ball is
   signal dirx : std_logic := '1';
   signal diry : std_logic := '1';
   signal ballx : unsigned(9 downto 0) := "0101000000"; -- current x pos of ball "0101000000" was og
-  signal bally : unsigned(9 downto 0) := "0011110000";-- current y pos of ball
+  signal bally : unsigned(9 downto 0) := "0110010000";-- current y pos of ball
 
   signal velocity : unsigned(2 downto 0) := "010";
 
@@ -48,7 +48,7 @@ begin
             if ((lives = "00") and (start = '0')) then
                 lives <= "11";
                 ballx <= "0101000000";
-                bally <= "0011110000";
+                bally <= "0110010000";
                 play <= '0';
             --if we have lives play the game
           elsif ((lives /= "00") and play = '1') then
@@ -104,7 +104,7 @@ begin
 
                velocity <= "000";
                ballx <= "0101000000";
-               bally <= "0011110000";
+               bally <= "0110010000";
                die <= '0';
                
                if (start = '0' and temp = '1') then
