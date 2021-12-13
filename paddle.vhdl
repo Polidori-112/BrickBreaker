@@ -29,7 +29,7 @@ begin
     if (rising_edge(clk)) then
       --display paddle
       if (vga_row > (paddlex - 50) and (vga_row < paddlex + 50)
-      and (vga_col > 450) and (vga_col < 465)) then
+      and (vga_col > 440) and (vga_col < 455)) then
         display <= '1';
       else
         display <= '0';

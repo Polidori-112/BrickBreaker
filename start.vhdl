@@ -59,7 +59,7 @@ begin
                 if (sscreen_col > 320) then
                     if ((sscreen_row > 455) and (sscreen_row < 485)) then
                         if ((sscreen_row > 465) and (sscreen_row < 475)) then
-                            sdisplay <= "011100";
+                            sdisplay <= "011110";
                         else
                             sdisplay <= "000000";
                         end if;
@@ -67,7 +67,7 @@ begin
                         sdisplay <= "011110";
                     end if;
                 else
-                    sdisplay <= "011100";
+                    sdisplay <= "011110";
                 end if;
             elsif (sscreen_row > 395) then
                 if ((sscreen_col < 1980 - 4*sscreen_row) or (sscreen_col < 4*sscreen_row - 1420)) then
@@ -115,7 +115,7 @@ begin
                 if ((sscreen_row > 165) and (sscreen_col < 380)) then
                     sdisplay <= "000000";
                 else
-                    sdisplay <= "100011";
+                    sdisplay <= "100111";
                 end if;
             elsif (sscreen_row > 95) then
                 if ((sscreen_row > 115) and (sscreen_col > 345)) then

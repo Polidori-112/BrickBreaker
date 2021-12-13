@@ -209,35 +209,50 @@ begin
 
       --draw paddle and ball
       if (valid1 = '1') then
-         if (lives = "00") then
-
+        
+          if (lives = "00") then
             rgb <= startdisplay;
-         else
-	     if ((paddle_display = '1')) then
+          else
+
+	        if ((paddle_display = '1')) then
                 rgb <= "110000";
             elsif ((ball_display = '1')) then
                 rgb <= "111111";
             elsif ((brick_display = '1')) then
-                rgb <= "000011";
+                if (col > 159) then
+                    rgb <= "110000";
+                elsif (col > 127) then
+                    rgb <= "001100";
+                elsif (col > 95) then
+                    rgb <= "000011";
+                elsif (col > 63) then
+                    rgb <= "110000";
+                elsif (col > 31) then
+                    rgb <= "001100";
+                else
+                    rgb <= "000011";
+                end if;
             elsif ((lives_display = '1')) then
                 rgb <= "111111";
             else
                 rgb <= "000000";
             end if;
+          end if;
 
-
-        end if;
       else
         rgb <= "000000";
       end if;
 
-      --collision with paddle
-      --keep in top file
+      ---------collision-----------
+
+      --paddle and ball
       if (paddle_display = '1' and ball_display = '1') then
         changeY <= '1';
         frame_update <= '1';
+      --brick and ball
+      --change x direction if it hits inbetween the top and bottom of brick
       elsif (brick_display = '1' and ball_display = '1'
-      and ((col < 30) 
+      and ((col < 30)
       or (col < 62 and col > 33)
       or (col < 94 and col > 65)
       or (col < 126 and col > 97)
@@ -245,17 +260,22 @@ begin
       or (col < 190 and col > 161)) and frame_update = '0') then
          changeX <= '1';
          frame_update <= '1';
+      --otherwise change y direction
       elsif (brick_display = '1' and ball_display = '1') then
         changeY <= '1';
         frame_update <= '1';
       elsif frame_update <= '0' then
         changeY <= '0';
+        changeX <= '0';
       end if;
 
+      --used to refresh frame update
+      --prevents changex/changey from being called multiple times in a single collision
       if (row = 700 and col = 0 and frame_update = '1') then
         frame_update <= '0';
       end if;
 
+      --break bricks
       if (brick_display = '1' and ball_display = '1' and del = '0') then
           del <= '1';
       else
