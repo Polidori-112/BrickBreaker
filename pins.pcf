@@ -4,9 +4,9 @@ set_io -nowarn -pullup 1 clk 21
 set_io -nowarn -pullup 1 HSYNC1 25
 set_io -nowarn -pullup 1 VSYNC1 23
 
-set_io -nowarn -pullup 1 left 46
-set_io -nowarn -pullup 1 right 2
-set_io -nowarn -pullup 1 start 47
+set_io -nowarn -pullup 1 left 28 
+set_io -nowarn -pullup 1 right 38
+set_io -nowarn -pullup 1 start 42
 
 set_io -nowarn -pullup 1 led 39
 set_io -nowarn -pullup 1 led1 40

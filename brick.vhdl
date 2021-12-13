@@ -83,7 +83,7 @@ architecture synth of brick is
 
 -- FF that store the current amount of bits. Must be reset when level resets
   signal brick_count : integer := 30;
-  signal brick_count2 : integer := 76;
+  signal brick_count2 : integer := 73;
 
   signal lvl : std_logic_vector(2 downto 0) := "001";
 
@@ -115,7 +115,7 @@ process (clk) begin
 		  		curr4 <= check4;
 	        		curr5 <= check5;
 				lvl(1) <= '0';
-				brick_count2 <= 70;
+				brick_count2 <= 73;
 				lvl_store(0) <= '1';
 			when "100" =>
 				curr0 <= end0;

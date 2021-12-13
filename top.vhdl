@@ -17,7 +17,7 @@ entity top is
       nes_data : in std_logic;
       nes_latch : out std_logic;
       nes_clock : out std_logic;
-
+      
       left : in std_logic;
       right : in std_logic;
       start : in std_logic;
@@ -29,23 +29,30 @@ end top;
 
 
 architecture synth of top is
-
-  component nes is
-     port(
-       data : in std_logic;
-       latch : out std_logic;
-       clock : out std_logic;
-       left : out std_logic;
-       right : out std_logic;
-       start : out std_logic
-     );
+	
+  component pll is
+     port (
+        clk_in : in std_logic;
+        clk_out : out std_logic;
+        clk_locked : out std_logic
+        );
   end component;
+
+--  component nes is
+--     port(
+--       clock_in : in std_logic;
+--       data : in std_logic;
+--       latch : out std_logic;
+--       clock : out std_logic;
+--       left : out std_logic;
+--       right : out std_logic;
+--       start : out std_logic
+--     );
+--  end component;
 
   component vga is
       port(
-        clk_in1 : in std_logic;
-        clk_out1 : out std_logic;
-        clk_locked1 : out std_logic;
+        clk_in : in std_logic;
         HSYNC : out std_logic;
         VSYNC : out std_logic;
         valid : out std_logic;
@@ -128,22 +135,28 @@ architecture synth of top is
   signal row : unsigned(9 downto 0);
   signal col : unsigned(9 downto 0);
 
-  -- signal left : std_logic;
-  -- signal right : std_logic;
-  -- signal start : std_logic;
+ -- signal left : std_logic;
+ -- signal right : std_logic;
+ -- signal start : std_logic;
 
+  signal clk_locked : std_logic;
 
   signal valid1 : std_logic;
 
   signal frame_update : std_logic := '0';
 
   signal level : unsigned (2 downto 0) := "001";
+
 begin
 
+  pll1 : pll port map (
+    clk_12M,
+    clk_pxl,
+    clk_locked
+  );
+
   vga1 : vga port map (
-    clk_in1 => clk_12M,
-    clk_out1 => clk_pxl,
-    clk_locked1 => clk_locked2,
+    clk_in => clk_pxl,
     HSYNC => HSYNC1,
     VSYNC => VSYNC1,
     valid => valid1,
@@ -196,13 +209,14 @@ begin
   );
 
   -- nes_impl : nes port map (
+  --     clk_pxl,
   --     nes_data,
   --     nes_latch,
   --     nes_clock,
   --     left,
   --     right,
   --     start
-  -- );
+  --);
 
   process (clk_pxl) begin
     if rising_edge(clk_pxl) then
@@ -279,7 +293,7 @@ begin
       if (brick_display = '1' and ball_display = '1' and del = '0') then
           del <= '1';
       else
-	       del <= '0';
+          del <= '0';
       end if;
 
 

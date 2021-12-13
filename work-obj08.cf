@@ -1,0 +1,31 @@
+v 4
+file . "vga.vhdl" "9e61c0d47e7a867608c0ee97cad4715fde597f67" "20211213064305.673":
+  entity vga at 1( 0) + 0 on 29;
+  architecture synth of vga at 18( 302) + 0 on 30;
+file . "top.vhdl" "3c6bf633b3e3243732cdc3c61568b09c0446dd3b" "20211213064305.671":
+  entity top at 1( 0) + 0 on 27;
+  architecture synth of top at 31( 610) + 0 on 28;
+file . "start.vhdl" "803d061d999c85939c479f904b96fd50ab3c5e73" "20211213064305.668":
+  entity startscreen at 1( 0) + 0 on 25;
+  architecture synth of startscreen at 17( 418) + 0 on 26;
+file . "pll.vhdl" "c586c84d6d757a32a5a144700f6b9bce6d6b8565" "20211213064305.666":
+  entity pll at 1( 0) + 0 on 23;
+  architecture synth of pll at 13( 211) + 0 on 24;
+file . "paddle.vhdl" "136920fc9c8f156a72ae6a781c9956e4cc88cef2" "20211213064305.665":
+  entity paddle at 2( 1) + 0 on 21;
+  architecture synth of paddle at 21( 317) + 0 on 22;
+file . "nes.vhdl" "20f98f1fdb7a42e4181b5b50cd4b49e546665ae6" "20211213064305.664":
+  entity nes at 1( 0) + 0 on 19;
+  architecture synth of nes at 17( 269) + 0 on 20;
+file . "lives.vhdl" "ea3c9e18945ee79e22ecb4d4343275d100fab110" "20211213064305.663":
+  entity live at 1( 0) + 0 on 17;
+  architecture synth of live at 15( 360) + 0 on 18;
+file . "brick_test.vhdl" "27205ad2525f0ee32eaf8f70872eeb3af50686c8" "20211213064305.661":
+  entity brick_test at 1( 0) + 0 on 15;
+  architecture test of brick_test at 8( 108) + 0 on 16;
+file . "brick.vhdl" "bbc93d039b20a2d6d8f1185dbca178641aa525ba" "20211213064305.660":
+  entity brick at 1( 0) + 0 on 13;
+  architecture synth of brick at 19( 381) + 0 on 14;
+file . "ball.vhdl" "e9833c3d4ba8d1b5a24983a316c39ba0d9c74791" "20211213064305.657":
+  entity ball at 1( 0) + 0 on 11;
+  architecture synth of ball at 21( 705) + 0 on 12;
