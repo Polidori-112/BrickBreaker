@@ -27,29 +27,43 @@ architecture synth of brick is
   signal start0 : std_logic_vector(9 downto 0) :=
                                             "0000000000";
   signal start1 : std_logic_vector(9 downto 0) :=
-                                            "0000000000";
+                                            "1111100000";
   signal start2 : std_logic_vector(9 downto 0) :=
     					    "0000000000";
   signal start3 : std_logic_vector(9 downto 0) :=
-                                            "0000000000";
+                                            "0000011111";
   signal start4 : std_logic_vector(9 downto 0) :=
                                             "0000000000";
   signal start5 : std_logic_vector(9 downto 0) :=
-                                            "0000010000";
+                                            "1111100000";
 
 -- Checker Level
   signal check0 : std_logic_vector(9 downto 0) :=
-                                            "1010101010";
+                                            "0101010101";
   signal check1 : std_logic_vector(9 downto 0) :=
-                                            "0101010101";
+                                            "1010101010";
   signal check2 : std_logic_vector(9 downto 0) :=
-                                            "1010101010";
+                                            "0101010101";
   signal check3 : std_logic_vector(9 downto 0) :=
-                                            "0101010101";
-  signal check4 : std_logic_vector(9 downto 0) :=
                                             "1010101010";
-  signal check5 : std_logic_vector(9 downto 0) :=
+  signal check4 : std_logic_vector(9 downto 0) :=
                                             "0101010101";
+  signal check5 : std_logic_vector(9 downto 0) :=
+                                            "1010101010";
+
+  signal end0 : std_logic_vector(9 downto 0) :=
+                                            "1101001110";
+  signal end1 : std_logic_vector(9 downto 0) :=
+                                            "1001001101";
+  signal end2 : std_logic_vector(9 downto 0) :=
+                                            "1101101101";
+  signal end3 : std_logic_vector(9 downto 0) :=
+                                            "1001011101";
+  signal end4 : std_logic_vector(9 downto 0) :=
+                                            "1101001110";
+  signal end5 : std_logic_vector(9 downto 0) :=
+                                            "0000000000";
+
 
 -- Brick States. These store the states of the bricks
 -- at any given moment. Only modify these in reponse to input from del,  
@@ -68,11 +82,11 @@ architecture synth of brick is
                                             "0000000000";
 
 -- FF that store the current amount of bits. Must be reset when level resets
-  signal brick_count : integer := 1;
+  signal brick_count : integer := 3;
 
   signal lvl : std_logic_vector(2 downto 0) := "001";
 
-  signal lvl_store : std_logic_vector(2 downto 0) := "000";
+  signal lvl_store : std_logic_vector(1 downto 0) := "00";
 
   signal lvl_change : std_logic;
 
@@ -90,9 +104,8 @@ process (clk) begin
 				curr3 <= start3;
 				curr4 <= start4;
 				curr5 <= start5;
-				brick_count <= 1; 
+				brick_count <= 3; 
 				lvl(0) <= '0';
-				lvl_store(0) <= '1';
 			when "010" =>
 	         		curr0 <= check0;
 		  		curr1 <= check1;
@@ -100,13 +113,24 @@ process (clk) begin
 	        		curr3 <= check3;
 		  		curr4 <= check4;
 	        		curr5 <= check5;
-		       		brick_count <= 30; 
+		       		brick_count <= 8; 
 				lvl(1) <= '0';
+				lvl_store(0) <= '1';
+			when "100" =>
+				curr0 <= end0;
+				curr1 <= end1;
+				curr2 <= end2;
+				curr3 <= end3;
+				curr4 <= end4;
+				curr5 <= end5;
+				brick_count <= 10;
+				lvl(2) <= '0';
 				lvl_store(1) <= '1';
-		        when others =>
-				lvl_change <= '1' when (brick_count = 0) else '0';
 				
-				lvl(1) <= '1' when (lvl_change = '1' and lvl_store(1) = '0') else '0';
+		        when others =>
+				
+				lvl(0) <= '1' when (brick_count = 0 and lvl_store(0) = '0') else '0';
+				lvl(1) <= '1' when (brick_count = 0 and lvl_store(1) = '0' and lvl_store(0) = '1') else '0';
 		end case;
 
 
@@ -119,26 +143,31 @@ process (clk) begin
 			when "00000" =>
 				display <= curr0(9 - to_integer(row(9 downto 6)));
 				curr0(9 - to_integer(row(9 downto 6))) <= '0' when (del = '1') else curr0(9 - to_integer(row(9 downto 6)));
+				brick_count <= brick_count - 1 when (del = '1' and curr0(9 - to_integer(row(9 downto 6))) = '1') else brick_count;
 			when "00001" =>
+				brick_count <= brick_count - 1 when (del = '1' and curr1(9 - to_integer(row(9 downto 6))) = '1') else brick_count;
 				display <= curr1(9 - to_integer(row(9 downto 6)));
                                 curr1(9 - to_integer(row(9 downto 6))) <= '0' when (del = '1') else curr1(9 - to_integer(row(9 downto 6)));
                 	when "00010" =>
+				brick_count <= brick_count - 1 when (del = '1' and curr2(9 - to_integer(row(9 downto 6))) = '1') else brick_count;
 				display <= curr2(9 - to_integer(row(9 downto 6)));
                                 curr2(9 - to_integer(row(9 downto 6))) <= '0' when (del = '1') else curr2(9 - to_integer(row(9 downto 6)));
 	        	when "00011" =>
+				brick_count <= brick_count - 1 when (del = '1' and curr3(9 - to_integer(row(9 downto 6))) = '1') else brick_count;
 				display <= curr3(9 - to_integer(row(9 downto 6)));
                                 curr3(9 - to_integer(row(9 downto 6))) <= '0' when (del = '1') else curr3(9 - to_integer(row(9 downto 6)));
                  	when "00100" =>
+				brick_count <= brick_count - 1 when (del = '1' and curr4(9 - to_integer(row(9 downto 6))) = '1') else brick_count;
 				display <= curr4(9 - to_integer(row(9 downto 6)));
                                 curr4(9 - to_integer(row(9 downto 6))) <= '0' when (del = '1') else curr4(9 - to_integer(row(9 downto 6)));
 	        	when "00101" =>
+				brick_count <= brick_count - 1 when (del = '1' and curr5(9 - to_integer(row(9 downto 6))) = '1') else brick_count;
 				display <= curr5(9 - to_integer(row(9 downto 6)));
                                 curr5(9 - to_integer(row(9 downto 6))) <= '0' when (del = '1') else curr5(9 - to_integer(row(9 downto 6)));
 			when others =>
 				display <= '0';
 		end case;
 
-		brick_count <= brick_count - 1 when (del = '1') else brick_count;
 
 	end if;
 
