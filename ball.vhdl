@@ -12,6 +12,7 @@ entity ball is
         changeX : in std_logic;
         changeY : in std_logic;
         next_velocity : in unsigned(2 downto 0);
+        reset : in std_logic;
         vga_row : in unsigned(9 downto 0); -- current row of pixels
         vga_col : in unsigned(9 downto 0); -- current col of pixels
         display : out std_logic -- 1 if ball displayed, otherwise 0
@@ -22,7 +23,7 @@ architecture synth of ball is
 
   signal dirx : std_logic := '1';
   signal diry : std_logic := '1';
-  signal ballx : unsigned(9 downto 0) := "0101000000"; -- current x pos of ball "0101000000" was og
+  signal ballx : unsigned(9 downto 0) := "0100100000"; -- current x pos of ball "0101000000" was og
   signal bally : unsigned(9 downto 0) := "0110010000";-- current y pos of ball
 
   signal velocity : unsigned(2 downto 0) := "010";
@@ -34,6 +35,7 @@ architecture synth of ball is
 
   signal play : std_logic := '0';
   signal temp : std_logic := '0';
+  signal temp2 : std_logic := '0';
   signal die : std_logic := '0';
 
 
@@ -47,7 +49,7 @@ begin
             --set all these things
             if ((lives = "00") and (start = '0')) then
                 lives <= "11";
-                ballx <= "0101000000";
+                ballx <= "0100010000";
                 bally <= "0110010000";
                 play <= '0';
             --if we have lives play the game
@@ -73,7 +75,7 @@ begin
                 else
                     inverty <= '0';
                 end if;
-                
+
                 if (bally >= 475) then
                     -- lives <= nextLife;
                     play <= '0';
@@ -100,13 +102,20 @@ begin
                 end if;
               end if;
 
+              if temp2 = '1' and bally /= "0110010000" then
+                -- play <= '0';
+                -- if lives /= "11" then
+                --   lives <= lives + 1;
+                -- end if;
+              end if;
+
             elsif (play = '0') then
 
                velocity <= "000";
-               ballx <= "0101000000";
+               ballx <= "0100010000";
                bally <= "0110010000";
                die <= '0';
-               
+
                if (start = '0' and temp = '1') then
                  velocity <= "010";
                  play <= '1';
@@ -125,24 +134,31 @@ begin
 
     --inverts x and y direction
     --must use rising edge function here
-    process(invertx, inverty, start, play, die) begin
+    process(invertx, inverty, start, play, die, reset, bally) begin
       if (rising_edge(invertx)) then
         dirx <= not dirx;
-        --changeX <= '0';
       end if;
 
       if (rising_edge(inverty)) then
         diry <= not diry;
-        --changeY <= '0';
       end if;
 
       if (rising_edge(start)) then
         temp <= '1';
       end if;
 
+      if rising_edge(reset) then
+        temp2 <= '1';
+      end if;
+
       if die then
         temp <= '0';
+        dirx <= '1';
       end if;
+
+      -- if bally /= "0110010000" then
+      --   temp2 <= '1';
+      -- end if;
 
     end process;
 

@@ -12,12 +12,12 @@ entity top is
       clk_locked2 : out std_logic;
       HSYNC1 : out std_logic;
       VSYNC1 : out std_logic;
-      led : out std_logic;
-      led1 : out std_logic;
       nes_data : in std_logic;
       nes_latch : out std_logic;
       nes_clock : out std_logic;
-      
+
+      led : out std_logic := '1';
+
       left : in std_logic;
       right : in std_logic;
       start : in std_logic;
@@ -29,7 +29,7 @@ end top;
 
 
 architecture synth of top is
-	
+
   component pll is
      port (
         clk_in : in std_logic;
@@ -82,6 +82,7 @@ architecture synth of top is
           vga_row : in unsigned(9 downto 0); -- current row of pixels
           vga_col : in unsigned(9 downto 0); -- current col of pixels
           lives : out unsigned(1 downto 0);
+          reset : in std_logic;
           changeX : in std_logic;
           changeY : in std_logic;
           next_velocity : in unsigned(2 downto 0);
@@ -96,7 +97,9 @@ architecture synth of top is
         row : in unsigned(9 downto 0);
         col : in unsigned(9 downto 0);
 
+      --  lives : inout unsigned(1 downto 0);
         display : out std_logic;
+        reset : out std_logic;
         del : in std_logic
       );
   end component;
@@ -127,7 +130,7 @@ architecture synth of top is
   signal del : std_logic := '0';
   signal startdisplay : std_logic_vector(5 downto 0);
 
-  signal lives : unsigned (1 downto 0) := "11";
+  signal lives : unsigned (1 downto 0) := "00";
   signal changeX : std_logic := '0';
   signal changeY : std_logic := '0';
   signal vel : unsigned(2 downto 0);
@@ -146,6 +149,8 @@ architecture synth of top is
   signal frame_update : std_logic := '0';
 
   signal level : unsigned (2 downto 0) := "001";
+
+  signal reset : std_logic;
 
 begin
 
@@ -181,6 +186,7 @@ begin
     changeY => changeY,
     display => ball_display,
     next_velocity => vel,
+    reset => reset,
     vga_row => row,
     vga_col => col
   );
@@ -190,6 +196,8 @@ begin
     row => row,
     col => col,
     del => del,
+    reset => reset,
+  --  lives => lives,
     display => brick_display
   );
 
@@ -223,7 +231,7 @@ begin
 
       --draw paddle and ball
       if (valid1 = '1') then
-        
+
           if (lives = "00") then
             rgb <= startdisplay;
           else

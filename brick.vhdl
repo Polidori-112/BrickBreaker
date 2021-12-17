@@ -10,15 +10,17 @@ entity brick is
       clk : in std_logic;
 
       row : in unsigned(9 downto 0);
-      col : in unsigned(9 downto 0); 
+      col : in unsigned(9 downto 0);
+      reset : out std_logic;
       del : in std_logic; --when this is high, the brick that encapsulates row and col gets deleted
+      lives : inout unsigned (1 downto 0);
       display : out std_logic
     );
 end brick;
 
 architecture synth of brick is
 
-   
+
 -- ___________________Level Design______________________
 -- Each vector represents a row of bricks and each bit in a vector
 -- is a column. The top left brick is the left most bit in vec0
@@ -35,7 +37,7 @@ architecture synth of brick is
   signal start4 : std_logic_vector(9 downto 0) :=
                                             "0000000000";
   signal start5 : std_logic_vector(9 downto 0) :=
-                                            "1111111000";
+                                            "1111110000";
 
 -- Checker Level
   signal check0 : std_logic_vector(9 downto 0) :=
@@ -52,24 +54,24 @@ architecture synth of brick is
                                             "1010101010";
 
   signal end0 : std_logic_vector(9 downto 0) :=
-                                            "1101001110";
+                                            "1101110101";
   signal end1 : std_logic_vector(9 downto 0) :=
-                                            "1001001101";
+                                            "1001000101";
   signal end2 : std_logic_vector(9 downto 0) :=
-                                            "1101101101";
+                                            "1101110111";
   signal end3 : std_logic_vector(9 downto 0) :=
-                                            "1001011101";
+                                            "1000010001";
   signal end4 : std_logic_vector(9 downto 0) :=
-                                            "1101001110";
+                                            "1101110001";
   signal end5 : std_logic_vector(9 downto 0) :=
                                             "0000000000";
 
 
 -- Brick States. These store the states of the bricks
--- at any given moment. Only modify these in reponse to input from del,  
+-- at any given moment. Only modify these in reponse to input from del,
 -- and lvl
   signal curr0 : std_logic_vector(9 downto 0) :=
-                                            "0000000000";
+                                            "0000000001";
   signal curr1 : std_logic_vector(9 downto 0) :=
                                             "0000000000";
   signal curr2 : std_logic_vector(9 downto 0) :=
@@ -81,13 +83,13 @@ architecture synth of brick is
   signal curr5 : std_logic_vector(9 downto 0) :=
                                             "0000000000";
 
--- FF that store the current amount of bits. Must be reset when level resets
+-- -- FF that store the current amount of bits. Must be reset when level resets
   signal brick_count : integer := 30;
   signal brick_count2 : integer := 73;
 
-  signal lvl : std_logic_vector(2 downto 0) := "001";
+  signal lvl : unsigned(2 downto 0) := "001";
 
-  signal lvl_store : std_logic_vector(1 downto 0) := "00";
+  signal lvl_store : unsigned(2 downto 0) := "000";
 
   signal lvl_change : std_logic;
 
@@ -99,14 +101,15 @@ process (clk) begin
 	if rising_edge(clk) then
 	           case lvl is
 			when "001" =>
- 			        curr0 <= start0; 
-				curr1 <= start1; 
-				curr2 <= start2; 
+ 			        curr0 <= start0;
+				curr1 <= start1;
+				curr2 <= start2;
 				curr3 <= start3;
 				curr4 <= start4;
 				curr5 <= start5;
-				brick_count <= 30;
-				lvl(0) <= '0';
+				-- brick_count <= 30;
+				lvl <= "000";
+        lvl_store <= "001";
 			when "010" =>
 	         		curr0 <= check0;
 		  		curr1 <= check1;
@@ -114,27 +117,50 @@ process (clk) begin
 	        		curr3 <= check3;
 		  		curr4 <= check4;
 	        		curr5 <= check5;
-				lvl(1) <= '0';
-				brick_count2 <= 73;
-				lvl_store(0) <= '1';
-			when "100" =>
+				lvl <= "000";
+				-- brick_count2 <= 73;
+				lvl_store <= "010";
+			when "011" =>
 				curr0 <= end0;
 				curr1 <= end1;
 				curr2 <= end2;
 				curr3 <= end3;
 				curr4 <= end4;
 				curr5 <= end5;
-				lvl(2) <= '0';
-				lvl_store(1) <= '1';
-				
+			  lvl <= "000";
+				lvl_store <= "111";
+
 		        when others =>
-				
-				lvl(1) <= '1' when (brick_count <= 0 and lvl_store(0) = '0') else '0';
-				lvl(2) <= '1' when (brick_count2 <= 0 and lvl_store(1) = '0' and lvl_store(0) = '1') else '0';
+
+            curr0 <= curr0;
+    				curr1 <= curr1;
+    				curr2 <= curr2;
+    				curr3 <= curr3;
+    				curr4 <= curr4;
+    				curr5 <= curr5;
+            reset <= '0';
+
+				-- lvl(1) <= '1' when (brick_count <= 0 and lvl_store(0) = '0') else '0';
+				-- lvl(2) <= '1' when (brick_count2 <= 0 and lvl_store(1) = '0' and lvl_store(0) = '1') else '0';
 		end case;
 
+    if curr0 = "0000000000" and
+       curr1 = "0000000000" and
+       curr2 = "0000000000" and
+       curr3 = "0000000000" and
+       curr4 = "0000000000" and
+       curr5 = "0000000000" then
 
-		
+         lvl <= lvl_store + 1;
+         reset <= '1';
+         if lives /= "11" then
+           lives <= lives + 1;
+         end if;
+
+    end if;
+
+
+
 
 
 		-- Displays pixel at row, col if brick in curr is on. If del is high, delete thr brick that encapsulates
