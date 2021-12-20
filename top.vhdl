@@ -279,7 +279,7 @@ begin
       or (col < 94 and col > 65)
       or (col < 126 and col > 97)
       or (col < 158 and col > 129)
-      or (col < 190 and col > 161)) and frame_update = '0') then
+      or (col < 190 and col > 161))) then
          changeX <= '1';
          frame_update <= '1';
       --otherwise change y direction
