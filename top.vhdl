@@ -283,7 +283,7 @@ begin
          changeX <= '1';
          frame_update <= '1';
       --otherwise change y direction
-      elsif (brick_display = '1' and ball_display = '1') then
+      elsif (brick_display = '1' and ball_display = '1' and frame_update = '0') then
         changeY <= '1';
         frame_update <= '1';
       elsif frame_update <= '0' then
